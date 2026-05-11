@@ -1,0 +1,241 @@
+{% load static %}
+
+<!doctype html>
+<html>
+  <head>
+    <title>Moving System</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+
+  <body>
+    <!-- MENU BUTTON -->
+    <div class="menu-btn" onclick="toggleSidebar()">☰</div>
+
+    <!-- SIDEBAR (IMPORTANT: ADD THIS) -->
+
+    <div class="sidebar" id="sidebar">
+      {% load static %} {% load static %}
+
+      <img src="{% static 'images/logo.png' %}" class="logo" />
+      <h4>Betmovers</h4>
+      <a href="#">Dashboard</a>
+      <a href="/add-booking/">Bookings</a>
+      <a href="/add-expense/">Expenses</a>
+      <a href="/admin/">Admin</a>
+     <a href="/reports/">
+    Reports
+</a>
+      <!-- LOGOUT -->
+      <form action="/logout/" method="post">
+        {% csrf_token %}
+        <button type="submit" class="logout-btn">Logout</button>
+      </form>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+      {% if messages %}
+
+    {% for message in messages %}
+
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+
+    {% endfor %}
+
+{% endif %}
+      <!-- SEARCH -->
+      <div class="search-container">
+        <form method="GET">
+          <input
+            type="text"
+            name="search"
+            placeholder="Search customer..."
+            class="search-input"
+          />
+          <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        </form>
+      </div>
+
+      <!-- DASHBOARD -->
+      <div class="row g-3">
+        <div class="col-md-3">
+          <div class="card-box">
+            <h6>Upcoming Bookings</h6>
+            <h3>{{ total_bookings }}</h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card-box">
+            <h6>Completed Moves</h6>
+            <h3 class="green">{{ completed_moves }}</h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card-box">
+            <h6>Daily Expense</h6>
+            <h3 class="red">{{ daily_expense }} Birr</h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card-box">
+            <h6>Monthly Expense</h6>
+            <h3 class="red">{{ monthly_expense }} Birr</h3>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="card-box">
+            <h6>Profit & Loss</h6>
+            <h3>{{ profit }} Birr</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOKING DETAILS -->
+      <div class="section-title">Booking Details</div>
+      <div class="card-box">
+        <p>Customer → From → To → Total Price → Advance → Balance → Status</p>
+      </div>
+
+      <!-- BUSINESS RULES -->
+      <div class="section-title">Business Rules</div>
+      <div class="card-box">
+        <p class="red">Today's Moves → {{ todays_moves }}</p>
+        <p class="yellow">Tomorrow's Moves → {{ tomorrow_moves }}</p>
+        <p class="green">Yesterday's Moves → {{ yesterday_moves }}</p>
+      </div>
+
+      <!-- COMPLETED WORKS -->
+      <div class="section-title">Completed Works</div>
+      <div class="card-box">
+        <ul>
+          <li>Move 1 = Completed</li>
+          <li>Move 2 = Completed</li>
+          <li>Move 3 = Completed</li>
+        </ul>
+      </div>
+
+      <!-- DAILY EXPENSE -->
+      <div class="section-title">Daily Expense</div>
+      <div class="card-box">
+        <ul>
+          <li>Labor</li>
+          <li>Packers</li>
+          <li>Driver</li>
+          <li>Miscellaneous</li>
+        </ul>
+      </div>
+
+      <!-- MONTHLY EXPENSE -->
+      <div class="section-title">Monthly Expense</div>
+      <div class="card-box">
+        <ul>
+          <li>Fuel</li>
+          <li>Repair</li>
+          <li>Rent</li>
+        </ul>
+      </div>
+
+      <!-- RECENT BOOKINGS -->
+      <div class="section-title">Recent Bookings</div>
+
+      <table class="table table-bordered bg-white">
+        <thead>
+          <tr>
+            <th>Customer</th>
+            <th>Phone</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Total Price</th>
+            <th>Advance</th>
+            <th>Balance</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+  {% if bookings %}
+
+    {% for booking in bookings %}
+    <tr>
+      <td>{{ booking.customer_name }}</td>
+      <td>{{ booking.phone }}</td>
+      <td>{{ booking.from_location }}</td>
+      <td>{{ booking.to_location }}</td>
+      <td>{{ booking.total_price }}</td>
+      <td>{{ booking.advance }}</td>
+      <td>{{ booking.balance }}</td>
+      <td>{{ booking.date }}</td>
+      <td>
+
+{% if booking.status == 'Completed' %}
+
+    <span class="badge bg-success">
+        Completed
+    </span>
+
+{% elif booking.status == 'Pending' %}
+
+    <span class="badge bg-warning">
+        Pending
+    </span>
+
+{% else %}
+
+    <span class="badge bg-danger">
+        Cancelled
+    </span>
+
+{% endif %}
+
+</td>
+
+      <td>
+        <a href="/edit-booking/{{ booking.id }}/" class="btn btn-sm btn-primary">
+          Edit
+        </a>
+
+        <a href="/delete-booking/{{ booking.id }}/" class="btn btn-sm btn-danger">
+          Delete
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+
+  {% else %}
+    <tr>
+      <td colspan="10" class="text-center">No bookings yet</td>
+    </tr>
+  {% endif %}
+</tbody>
+
+
+    <!-- SCRIPT -->
+    <script>
+      function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("hide");
+        document.querySelector(".main").classList.toggle("full");
+      }
+    </script>
+
+    <footer class="footer">
+
+    BetMovers Management System © 2026
+
+</footer>
+
+  </body>
+</html>

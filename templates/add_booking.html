@@ -1,0 +1,51 @@
+{% load static %}
+<!doctype html>
+<html>
+  <head>
+    <title>Add Booking</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+
+  <body>
+    <div class="main">
+      <h2>Add Booking</h2>
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <input
+          type="text"
+          name="customer_name"
+          placeholder="Customer Name"
+        /><br /><br />
+        <input type="text" name="phone" placeholder="Phone" /><br /><br />
+        <input
+          type="text"
+          name="from_location"
+          placeholder="From"
+        /><br /><br />
+        <input type="text" name="to_location" placeholder="To" /><br /><br />
+
+        <input
+          type="number"
+          name="total_price"
+          placeholder="Total Price"
+        /><br /><br />
+        <input type="number" name="advance" placeholder="Advance" /><br /><br />
+        <input type="number" name="balance" placeholder="Balance" /><br /><br />
+
+        <input type="date" name="date" /><br /><br />
+
+        <select name="status">
+          <option value="Pending">Pending</option>
+
+          <option value="Completed">Completed</option>
+
+          <option value="In Progress">In Progress</option>
+        </select>
+
+        <button type="submit">Save Booking</button>
+      </form>
+    </div>
+  </body>
+</html>

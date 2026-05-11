@@ -1,0 +1,53 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Add Expense</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+
+  <body>
+    <div class="main">
+      <h1 class="main-title">Add Expense</h1>
+
+      <div class="card-box">
+        <form method="POST">
+          {% csrf_token %}
+
+          <input type="number" name="labor" placeholder="Labor" />
+
+          <input type="number" name="packers" placeholder="Packers" />
+
+          <input type="number" name="driver" placeholder="Driver" />
+
+          <input type="number" name="supervisor" placeholder="Supervisor" />
+
+          <input type="number" name="additional" placeholder="Additional" />
+
+          <input
+            type="number"
+            name="miscellaneous"
+            placeholder="Miscellaneous"
+          />
+
+          <input type="number" name="total" placeholder="Total Expense" />
+
+          <input type="date" name="date" />
+
+          <button type="submit">Save Expense</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
