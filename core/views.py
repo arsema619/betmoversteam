@@ -1226,4 +1226,5 @@ def fix_user(request):
     u = User.objects.get(username="helen")
     u.set_password("fghIOP45@@")
     u.save()
+    
     return HttpResponse("Password fixed")
