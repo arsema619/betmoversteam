@@ -1005,7 +1005,7 @@ def home(request):
 
     return render(request, "home.html")
 
-from django.http import HttpResponse
+
 
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
@@ -1014,17 +1014,12 @@ def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        role = request.POST.get("role")
 
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
-
-            if role == "admin":
-                return redirect("/admin-dashboard/")
-            else:
-                return redirect("/employee-dashboard/")
+            return redirect("/")  # or dashboard
 
         return render(request, "home.html", {
             "error": "Invalid username or password"
