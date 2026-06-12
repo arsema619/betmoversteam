@@ -1021,15 +1021,21 @@ def login_view(request):
 
         user = authenticate(request, username=username, password=password)
 
+        print("USER:", user)  # check Render logs
+
         if user is not None:
             login(request, user)
-            return redirect('/')   # login success
+            print("LOGIN SUCCESS")
+
+            return redirect("/")   # should move page
         else:
-            return render(request, "login.html", {
-                "error": "Invalid username or password"
-            })
+            print("LOGIN FAILED")
+
+            return render(request, "login.html", {"error": "Wrong credentials"})
 
     return render(request, "login.html")
+
+
 
 def employee_business_rule(request):
 
