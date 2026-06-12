@@ -997,17 +997,15 @@ from django.shortcuts import render, redirect
 
 def login_view(request):
     if request.method == "POST":
-
         username = request.POST.get("username")
         password = request.POST.get("password")
-        role = request.POST.get("role")
 
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
 
-            if role == "admin":
+            if user.is_staff or user.is_superuser:
                 return redirect("/admin-dashboard/")
             else:
                 return redirect("/employee-dashboard/")
@@ -1017,7 +1015,6 @@ def login_view(request):
         })
 
     return render(request, "home.html")
-
 
 @login_required
 def total_progress(request):
@@ -1226,5 +1223,5 @@ def fix_user(request):
     u = User.objects.get(username="helen")
     u.set_password("fghIOP45@@")
     u.save()
-    
+
     return HttpResponse("Password fixed")
