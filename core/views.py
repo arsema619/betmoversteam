@@ -973,28 +973,41 @@ def employee_daily_expense(request):
         }
     )
 
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+
 def home(request):
-    return render(request, "home.html")
 
-def login_view(request):
-    if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
+    if request.method == 'POST':
 
-        user = authenticate(request, username=username, password=password)
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        role = request.POST.get('role')
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
+        )
 
         if user is not None:
+
             login(request, user)
 
-            if user.is_superuser:
+            if role == 'admin':
                 return redirect('/admin-dashboard/')
             else:
                 return redirect('/employee-dashboard/')
 
-        return render(request, "login.html", {"error": "Invalid login"})
+        else:
+            return render(request, 'home.html', {
+                'error': 'Invalid username or password'
+            })
 
-    return render(request, "login.html")
+    return render(request, 'home.html')
 
+def login_view(request):
+    return render(request, 'home.html')
 
 def employee_business_rule(request):
 
