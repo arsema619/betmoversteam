@@ -124,7 +124,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 ALLOWED_HOSTS = [
-    "betmoversteam.onrender.com",
+    "127.0.0.1",
+    "localhost",
+    ".onrender.com",
     "betmoversteam.com",
     "www.betmoversteam.com",
 ]
