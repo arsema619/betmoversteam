@@ -1005,25 +1005,22 @@ def home(request):
 
     return render(request, "home.html")
 
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
-
 def login_view(request):
     if request.method == "POST":
+        print("POST DATA:", request.POST)  # ADD THIS
+
         username = request.POST.get("username")
         password = request.POST.get("password")
 
         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            login(request, user)
-            return redirect('/')   # login success
-        else:
-            return render(request, "login.html", {
-                "error": "Invalid username or password"
-            })
+        print("USER:", user)
 
-    return render(request, "login.html")
+        if user:
+            login(request, user)
+            return redirect("/")
+
+    return render(request, "home.html")
 
 def employee_business_rule(request):
 
