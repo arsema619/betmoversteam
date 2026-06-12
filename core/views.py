@@ -1035,13 +1035,13 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('/')   # login success
-        else:
-            return render(request, "login.html", {
-                "error": "Invalid username or password"
-            })
+            return redirect("/")  # or dashboard
 
-    return render(request, "login.html")
+        return render(request, "home.html", {
+            "error": "Invalid username or password"
+        })
+
+    return render(request, "home.html")
 
 @login_required
 def total_progress(request):
