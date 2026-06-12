@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Monthly Expense</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <style>
+      body {
+        background: #f5f7fb;
+      }
+
+      .card-box {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      input,
+      select {
+        height: 50px;
+        border-radius: 12px !important;
+      }
+
+      button {
+        height: 50px;
+        border-radius: 12px !important;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container mt-5">
+      <div class="card-box">
+        <h2 class="mb-4">Monthly Expense</h2>
+
+        <form method="POST">
+          {% csrf_token %}
+
+          <select name="month" class="form-control mb-3">
+            <option value="1">Month 1 - January</option>
+
+            <option value="2">Month 2 - February</option>
+
+            <option value="3">Month 3 - March</option>
+
+            <option value="4">Month 4 - April</option>
+
+            <option value="5">Month 5 - May</option>
+
+            <option value="6">Month 6 - June</option>
+
+            <option value="7">Month 7 - July</option>
+
+            <option value="8">Month 8 - August</option>
+
+            <option value="9">Month 9 - September</option>
+
+            <option value="10">Month 10 - October</option>
+
+            <option value="11">Month 11 - November</option>
+
+            <option value="12">Month 12 - December</option>
+          </select>
+
+          <input
+            type="number"
+            name="fuel"
+            class="form-control mb-3"
+            placeholder="Fuel"
+          />
+
+          <input
+            type="number"
+            name="repair"
+            class="form-control mb-3"
+            placeholder="Repair"
+          />
+
+          <input
+            type="number"
+            name="oil"
+            class="form-control mb-3"
+            placeholder="Oil"
+          />
+
+          <input
+            type="number"
+            name="house_rent"
+            class="form-control mb-3"
+            placeholder="House Rent"
+          />
+
+          <input
+            type="number"
+            name="office_rent"
+            class="form-control mb-3"
+            placeholder="Office Rent"
+          />
+
+          <input
+            type="number"
+            name="other"
+            class="form-control mb-4"
+            placeholder="Other"
+          />
+
+          <button class="btn btn-dark w-100">Save Monthly Expense</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

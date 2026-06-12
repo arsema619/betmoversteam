@@ -115,6 +115,15 @@
             />
           </div>
 
+          <label>Extra</label>
+
+          <input
+            type="number"
+            name="extra"
+            value="{{ booking.extra }}"
+            class="form-control"
+          />
+
           <!-- DATE -->
           <div class="mb-3">
             <label class="form-label"> Date </label>
@@ -127,6 +136,8 @@
               required
             />
           </div>
+
+          <!-- STATUS -->
 
           <!-- STATUS -->
           <div class="mb-3">
@@ -161,21 +172,6 @@
                 %}
               >
                 Completed
-              </option>
-
-              <option
-                value="In Progress"
-                {%
-                if
-                booking.status=""
-                ="In Progress"
-                %}
-                selected
-                {%
-                endif
-                %}
-              >
-                In Progress
               </option>
             </select>
           </div>

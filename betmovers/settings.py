@@ -140,6 +140,9 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+SESSION_COOKIE_AGE = 86400 * 30  # 30 days
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',

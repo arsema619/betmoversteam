@@ -1,3 +1,7 @@
+<h1 style="color:red;">
+TEST CHANGE WORKING
+</h1>
+
 {% load static %}
 
 <!doctype html>
@@ -17,29 +21,45 @@
     <!-- MENU BUTTON -->
     <div class="menu-btn" onclick="toggleSidebar()">☰</div>
 
-    <!-- SIDEBAR (IMPORTANT: ADD THIS) -->
+    
+<div class="sidebar">
 
-    <div class="sidebar" id="sidebar">
-      {% load static %} {% load static %}
+    {% load static %}
 
-      <img src="{% static 'images/logo.png' %}" class="logo" />
-      <h4>Betmovers</h4>
-      <a href="#">Dashboard</a>
-      <a href="/add-booking/">Bookings</a>
-      <a href="/add-expense/">Expenses</a>
-      <a href="/admin/">Admin</a>
-     <a href="/reports/">
-    Reports
-</a>
-      <!-- LOGOUT -->
-      <form action="/logout/" method="post">
+    <img
+        src="{% static 'images/logo.png' %}"
+        class="logo"
+    >
+
+    <h4>
+        Betmovers
+    </h4>
+
+    <a href="/">
+        Dashboard
+    </a>
+
+    <a href="/add-booking/">
+        Bookings
+    </a>
+
+    <form action="/logout/" method="POST">
+
         {% csrf_token %}
-        <button type="submit" class="logout-btn">Logout</button>
-      </form>
-    </div>
+
+        <button class="logout-btn">
+
+            Logout
+
+        </button>
+
+    </form>
+              
+</div>
+
 
     <!-- MAIN -->
-    <div class="main">
+    <div class="main-content">
       {% if messages %}
 
     {% for message in messages %}
@@ -51,178 +71,356 @@
     {% endfor %}
 
 {% endif %}
+
+     
       <!-- SEARCH -->
-      <div class="search-container">
-        <form method="GET">
-          <input
+<div class="search-container mb-4">
+
+    <form method="GET" class="d-flex">
+
+        <input
             type="text"
             name="search"
+            class="form-control"
             placeholder="Search customer..."
-            class="search-input"
-          />
-          <button type="submit" class="btn btn-primary btn-sm">Search</button>
-        </form>
-      </div>
+            value="{{ search }}"
+        >
 
-      <!-- DASHBOARD -->
-      <div class="row g-3">
-        <div class="col-md-3">
-          <div class="card-box">
-            <h6>Upcoming Bookings</h6>
-            <h3>{{ total_bookings }}</h3>
-          </div>
-        </div>
+        <button
+            type="submit"
+            class="btn btn-dark ms-2"
+        >
+            Search
+        </button>
 
-        <div class="col-md-3">
-          <div class="card-box">
-            <h6>Completed Moves</h6>
-            <h3 class="green">{{ completed_moves }}</h3>
-          </div>
-        </div>
+    </form>
 
-        <div class="col-md-3">
-          <div class="card-box">
-            <h6>Daily Expense</h6>
-            <h3 class="red">{{ daily_expense }} Birr</h3>
-          </div>
-        </div>
+</div>
 
-        <div class="col-md-3">
-          <div class="card-box">
-            <h6>Monthly Expense</h6>
-            <h3 class="red">{{ monthly_expense }} Birr</h3>
-          </div>
-        </div>
 
-        <div class="col-md-3">
-          <div class="card-box">
-            <h6>Profit & Loss</h6>
-            <h3>{{ profit }} Birr</h3>
-          </div>
-        </div>
-      </div>
+{% if search %}
 
-      <!-- BOOKING DETAILS -->
-      <div class="section-title">Booking Details</div>
-      <div class="card-box">
-        <p>Customer → From → To → Total Price → Advance → Balance → Status</p>
-      </div>
+<div class="card-box mt-4">
 
-      <!-- BUSINESS RULES -->
-      <div class="section-title">Business Rules</div>
-      <div class="card-box">
-        <p class="red">Today's Moves → {{ todays_moves }}</p>
-        <p class="yellow">Tomorrow's Moves → {{ tomorrow_moves }}</p>
-        <p class="green">Yesterday's Moves → {{ yesterday_moves }}</p>
-      </div>
+    <h4 class="mb-3">
 
-      <!-- COMPLETED WORKS -->
-      <div class="section-title">Completed Works</div>
-      <div class="card-box">
-        <ul>
-          <li>Move 1 = Completed</li>
-          <li>Move 2 = Completed</li>
-          <li>Move 3 = Completed</li>
-        </ul>
-      </div>
+        Search Results
 
-      <!-- DAILY EXPENSE -->
-      <div class="section-title">Daily Expense</div>
-      <div class="card-box">
-        <ul>
-          <li>Labor</li>
-          <li>Packers</li>
-          <li>Driver</li>
-          <li>Miscellaneous</li>
-        </ul>
-      </div>
+    </h4>
 
-      <!-- MONTHLY EXPENSE -->
-      <div class="section-title">Monthly Expense</div>
-      <div class="card-box">
-        <ul>
-          <li>Fuel</li>
-          <li>Repair</li>
-          <li>Rent</li>
-        </ul>
-      </div>
+    <table class="table">
 
-      <!-- RECENT BOOKINGS -->
-      <div class="section-title">Recent Bookings</div>
-
-      <table class="table table-bordered bg-white">
         <thead>
-          <tr>
-            <th>Customer</th>
-            <th>Phone</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Total Price</th>
-            <th>Advance</th>
-            <th>Balance</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
+
+            <tr>
+
+                <th>Move</th>
+
+                <th>Customer</th>
+
+                <th>Phone</th>
+
+                <th>Status</th>
+
+            </tr>
+
         </thead>
 
         <tbody>
-  {% if bookings %}
 
-    {% for booking in bookings %}
-    <tr>
-      <td>{{ booking.customer_name }}</td>
-      <td>{{ booking.phone }}</td>
-      <td>{{ booking.from_location }}</td>
-      <td>{{ booking.to_location }}</td>
-      <td>{{ booking.total_price }}</td>
-      <td>{{ booking.advance }}</td>
-      <td>{{ booking.balance }}</td>
-      <td>{{ booking.date }}</td>
-      <td>
+        {% for booking in bookings %}
 
-{% if booking.status == 'Completed' %}
+            <tr>
 
-    <span class="badge bg-success">
-        Completed
-    </span>
+                <td>
+                    Move {{ booking.id }}
+                </td>
 
-{% elif booking.status == 'Pending' %}
+                <td>
+                    {{ booking.customer_name }}
+                </td>
 
-    <span class="badge bg-warning">
-        Pending
-    </span>
+                <td>
+                    {{ booking.phone }}
+                </td>
 
-{% else %}
+                <td>
+                    {{ booking.status }}
+                </td>
 
-    <span class="badge bg-danger">
-        Cancelled
-    </span>
+            </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
 
 {% endif %}
 
-</td>
-
-      <td>
-        <a href="/edit-booking/{{ booking.id }}/" class="btn btn-sm btn-primary">
-          Edit
-        </a>
-
-        <a href="/delete-booking/{{ booking.id }}/" class="btn btn-sm btn-danger">
-          Delete
-        </a>
-      </td>
-    </tr>
-    {% endfor %}
-
-  {% else %}
-    <tr>
-      <td colspan="10" class="text-center">No bookings yet</td>
-    </tr>
-  {% endif %}
-</tbody>
+    
 
 
+<div class="main-content">
+
+    <h2 class="mb-4 fw-bold">
+        Dashboard
+    </h2>
+
+    <div class="row g-4">
+
+        <!-- UPCOMING BOOKINGS -->
+
+        <div class="col-md-4">
+
+            <a
+                href="/upcoming-bookings/"
+                style="text-decoration:none;"
+            >
+
+                <div class="card-box">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+                                Upcoming Bookings
+                            </h6>
+
+                            <h2 class="blue fw-bold">
+
+                                {{ total_bookings }}
+
+                            </h2>
+
+                        </div>
+
+                        <div class="icon-circle blue-bg">
+
+                            📦
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- COMPLETED MOVES -->
+
+        <div class="col-md-4">
+
+            <a
+                href="/completed-moves/"
+                style="text-decoration:none;"
+            >
+
+                <div class="card-box">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+                                Completed Moves
+                            </h6>
+
+                            <h2 class="green fw-bold">
+
+                                {{ completed_moves }}
+
+                            </h2>
+
+                        </div>
+
+                        <div class="icon-circle green-bg">
+
+                            ✅
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- DAILY EXPENSE -->
+
+        <div class="col-md-4">
+
+            <a
+                href="/daily-expense-report/"
+                style="text-decoration:none;"
+            >
+
+                <div class="card-box">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+                                Daily Expense
+                            </h6>
+
+                            <h2 class="red fw-bold">
+
+                                {{ daily_expense }}
+
+                            </h2>
+
+                        </div>
+
+                        <div class="icon-circle red-bg">
+
+                            💰
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- MONTHLY EXPENSE -->
+
+        <div class="col-md-4">
+
+            <a
+                href="/monthly-expense-report/"
+                style="text-decoration:none;"
+            >
+
+                <div class="card-box">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+                                Monthly Expense
+                            </h6>
+
+                            <h2 class="orange fw-bold">
+
+                                {{ monthly_expense }}
+
+                            </h2>
+
+                        </div>
+
+                        <div class="icon-circle orange-bg">
+
+                            📊
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- PROFIT -->
+
+        <div class="col-md-4">
+
+            <a
+                href="/profit-loss/"
+                style="text-decoration:none;"
+            >
+
+                <div class="card-box">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+                                Profit & Loss
+                            </h6>
+
+                            <h2 class="green fw-bold">
+
+                                {{ profit }}
+
+                            </h2>
+
+                        </div>
+
+                        <div class="icon-circle green-bg">
+
+                            📈
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <!-- BUSINESS RULE -->
+
+        <div class="col-md-4">
+
+            <a
+                href="/business-rule/"
+                style="text-decoration:none;"
+            >
+
+                <div class="card-box">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div>
+
+                            <h6 class="text-muted">
+                                Business Rule
+                            </h6>
+
+                            <h2 class="purple fw-bold">
+
+                                Rules
+
+                            </h2>
+
+                        </div>
+
+                        <div class="icon-circle purple-bg">
+
+                            📝
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+      
     <!-- SCRIPT -->
     <script>
       function toggleSidebar() {
@@ -230,6 +428,68 @@
         document.querySelector(".main").classList.toggle("full");
       }
     </script>
+
+    <script>
+
+function calculateTotal() {
+
+    let labor = Number(
+        document.getElementById('labor').value
+    ) || 0;
+
+    let packers = Number(
+        document.getElementById('packers').value
+    ) || 0;
+
+    let driver = Number(
+        document.getElementById('driver').value
+    ) || 0;
+
+    let supervisor = Number(
+        document.getElementById('supervisor').value
+    ) || 0;
+
+    let stairs = Number(
+        document.getElementById('stairs').value
+    ) || 0;
+
+    let jordan = Number(
+        document.getElementById('jordan').value
+    ) || 0;
+
+    let additional = Number(
+        document.getElementById('additional').value
+    ) || 0;
+
+    let miscellaneous = Number(
+        document.getElementById('miscellaneous').value
+    ) || 0;
+
+    let total =
+        labor +
+        packers +
+        driver +
+        supervisor +
+        stairs +
+        jordan +
+        additional +
+        miscellaneous;
+
+    document.getElementById('total').value = total;
+}
+
+let inputs = document.querySelectorAll('input');
+
+inputs.forEach(input => {
+
+    input.addEventListener(
+        'input',
+        calculateTotal
+    );
+
+});
+
+</script>
 
     <footer class="footer">
 

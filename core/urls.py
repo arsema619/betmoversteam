@@ -3,11 +3,19 @@ from . import views
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import views as auth_views
+from django.http import HttpResponse
 
 
-urlpatterns = [
+urlpatterns =  [
 
-    path('', views.dashboard),
+
+    path('', views.home, name='home'),
+
+    path('home/', views.home, name='home'),
+
+    path('login/', views.login_view, name='login'),
+
+
 
     path(
         'add-booking/',
@@ -46,6 +54,62 @@ urlpatterns = [
 
     path('accounts/', include('django.contrib.auth.urls')),
         
-        path('logout/', auth_views.LogoutView.as_view(), name='logout')
+        path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+
+        path('upcoming-bookings/', views.upcoming_bookings),
+
+path('completed-moves/', views.completed_moves),
+path('business-rule/', views.business_rule),
+path(
+    'monthly-expense/',
+    views.add_monthly_expense
+),
+
+path(
+    'daily-expense-report/',
+    views.daily_expense_report,
+    name='daily_expense_report'
+),
+
+path(
+    'monthly-expense-report/',
+    views.monthly_expense_report,
+    name='monthly_expense_report'
+),
+
+
+
+path("profit-loss/", views.profit_loss, name="profit_loss"),
+
+path(
+    'profit-details/<int:month>/',
+    views.profit_details
+),
+
+
+
+path('admin-dashboard/', views.admin_dashboard),
+
+path('employee-dashboard/', views.dashboard),
+
+path(
+    'employee-monthly-expense/',
+    views.employee_monthly_expense
+),
+
+path(
+    'employee-daily-expense/',
+    views.employee_daily_expense
+),
+
+path(
+    'employee-business-rule/',
+    views.employee_business_rule,
+),
+
+path(
+    'total-progress/',
+    views.total_progress,
+),
    
  ]
