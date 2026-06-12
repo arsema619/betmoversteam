@@ -1023,25 +1023,27 @@ def employee_business_rule(request):
     )
 
 
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
-
 def login_view(request):
     if request.method == "POST":
+        print("POST DATA:", request.POST)  # IMPORTANT DEBUG
+
         username = request.POST.get("username")
         password = request.POST.get("password")
+
+        print("USERNAME:", username)
+        print("PASSWORD:", password)
 
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
-            return redirect("/")  # or dashboard
+            return redirect("/")
 
-        return render(request, "home.html", {
-            "error": "Invalid username or password"
-        })
+        return render(request, "home.html", {"error": "Invalid login"})
 
     return render(request, "home.html")
+
+
 
 @login_required
 def total_progress(request):
