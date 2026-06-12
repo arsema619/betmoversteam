@@ -76,8 +76,7 @@
       <div class="error">{{ error }}</div>
       {% endif %}
 
-      <!-- ✅ FIXED FORM -->
-      <form method="POST" action="/login/">
+      <form method="POST" action="{% url 'login' %}">
         {% csrf_token %}
 
         <input
@@ -85,7 +84,6 @@
           name="username"
           class="form-control"
           placeholder="Username"
-          required
         />
 
         <input
@@ -93,10 +91,9 @@
           name="password"
           class="form-control"
           placeholder="Password"
-          required
         />
 
-        <select name="role" class="form-control" required>
+        <select name="role" class="form-control">
           <option value="employee">Employee</option>
           <option value="admin">Admin</option>
         </select>
