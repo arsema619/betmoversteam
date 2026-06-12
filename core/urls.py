@@ -9,12 +9,9 @@ from django.http import HttpResponse
 urlpatterns =  [
 
 
+     path("login/", views.login_view, name="login"),
+    
     path('', views.home, name='home'),
-
-    path('home/', views.home, name='home'),
-
-    path('login/', views.login_view, name='login'),
-
 
 
     path(
