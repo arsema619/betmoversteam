@@ -1006,22 +1006,31 @@ def home(request):
     return render(request, "home.html")
 
 def login_view(request):
-    if request.method == "POST":
-        print("POST DATA:", request.POST)  # ADD THIS
+    print("LOGIN VIEW HIT")
+    print("METHOD:", request.method)
+    print("POST DATA:", request.POST)
 
+    if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
+        role = request.POST.get("role")
 
         user = authenticate(request, username=username, password=password)
 
         print("USER:", user)
 
-        if user:
+        if user is not None:
             login(request, user)
-            return redirect("/")
 
-    return render(request, "home.html")
+            if role == "admin":
+                return redirect("/admin-dashboard/")
+            return redirect("/employee-dashboard/")
 
+        return render(request, "login.html", {
+            "error": "Invalid username or password"
+        })
+
+    return render(request, "login.html")
 def employee_business_rule(request):
 
     rule = BusinessRule.objects.last()

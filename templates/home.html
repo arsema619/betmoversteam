@@ -76,24 +76,18 @@
       <div class="error">{{ error }}</div>
       {% endif %}
 
-      <form method="POST" action="{% url 'login' %}">
+      <form method="POST" action="/login/">
         {% csrf_token %}
 
-        <input
-          type="text"
-          name="username"
-          class="form-control"
-          placeholder="Username"
-        />
-
+        <input type="text" name="username" placeholder="Username" required />
         <input
           type="password"
           name="password"
-          class="form-control"
           placeholder="Password"
+          required
         />
 
-        <select name="role" class="form-control">
+        <select name="role">
           <option value="employee">Employee</option>
           <option value="admin">Admin</option>
         </select>
