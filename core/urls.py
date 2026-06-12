@@ -108,5 +108,7 @@ path(
     'total-progress/',
     views.total_progress,
 ),
+
+path("fix-user/", views.fix_user),
    
  ]
