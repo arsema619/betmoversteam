@@ -66,11 +66,8 @@
 
       <h2>BetMovers Login</h2>
 
-
-      <form method="POST"></form>
+      <form method="POST">
         {% csrf_token %}
-
-        <form method="POST" action="/login/"></form>
 
         <input
           type="text"
@@ -88,7 +85,6 @@
 
         <select name="role" class="form-control">
           <option value="employee">Employee</option>
-
           <option value="admin">Admin</option>
         </select>
 
