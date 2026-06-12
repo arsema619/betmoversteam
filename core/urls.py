@@ -4,6 +4,7 @@ from django.urls import path, include
 from django.contrib.auth.views import LogoutView
 from django.contrib.auth import views as auth_views
 from django.http import HttpResponse
+from django.views.generic import RedirectView
 
 
 urlpatterns =  [
@@ -13,6 +14,9 @@ urlpatterns =  [
     
     
      path('', views.home),
+
+
+    path('home/', RedirectView.as_view(url='/login/'), name='home'),
 
     path(
         'add-booking/',

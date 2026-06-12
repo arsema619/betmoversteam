@@ -992,8 +992,6 @@ def employee_business_rule(request):
     )
 
 
-from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
 
 def login_view(request):
     if request.method == "POST":
@@ -1005,7 +1003,7 @@ def login_view(request):
         if user is not None:
             login(request, user)
 
-            if user.is_staff or user.is_superuser:
+            if hasattr(user, 'profile') and user.profile.role == 'admin':
                 return redirect("/admin-dashboard/")
             else:
                 return redirect("/employee-dashboard/")
@@ -1015,6 +1013,7 @@ def login_view(request):
         })
 
     return render(request, "home.html")
+
 
 @login_required
 def total_progress(request):
