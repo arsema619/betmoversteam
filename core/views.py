@@ -829,8 +829,7 @@ def admin_dashboard(request):
 
 
 
-
-
+@login_required
 def employee_monthly_expense(request):
 
     if request.method == 'POST':
@@ -845,6 +844,8 @@ def employee_monthly_expense(request):
 
         office_rent = int(request.POST['office_rent'] or 0)
 
+        payment = int(request.POST['payment'] or 0)
+
         other = int(request.POST['other'] or 0)
 
         total = (
@@ -853,6 +854,7 @@ def employee_monthly_expense(request):
             oil +
             house_rent +
             office_rent +
+            payment +
             other
         )
 
@@ -870,6 +872,8 @@ def employee_monthly_expense(request):
 
             office_rent=office_rent,
 
+            payment=payment,
+
             other=other,
 
             total=total,
@@ -881,6 +885,8 @@ def employee_monthly_expense(request):
         request,
         'employee_monthly_expense.html'
     )
+
+
 
 @login_required
 def employee_daily_expense(request):

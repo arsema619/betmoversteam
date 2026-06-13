@@ -117,6 +117,8 @@ class MonthlyExpense(models.Model):
 
     other = models.IntegerField(default=0)
 
+    payment = models.FloatField(default=0) 
+
     total = models.IntegerField(default=0)
 
     def __str__(self):

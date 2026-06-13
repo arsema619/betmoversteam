@@ -14,51 +14,39 @@
       <div class="card shadow p-4 border-0 rounded-4">
         <h2 class="mb-4">Monthly Expense Report</h2>
 
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Month</th>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Fuel</th>
+                <th>Office Rent</th>
+                <th>Repair</th>
+                <th>Oil</th>
+                <th>House Rent</th>
+                <th>Payment</th>
+                <th>Other</th>
+                <th>Total</th>
+              </tr>
+            </thead>
 
-              <th>Fuel</th>
-
-              <th>office_rent</th>
-
-              <th>Repair</th>
-
-              <th>Oil</th>
-
-              <th>house_rent</th>
-
-              <th>Other</th>
-
-              <th>Total</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {% for item in monthly_expenses %}
-
-            <tr>
-              <td>{{ item.month }}</td>
-
-              <td>{{ item.fuel }}</td>
-
-              <td>{{ item.office_rent }}</td>
-
-              <td>{{ item.repair }}</td>
-
-              <td>{{ item.oil }}</td>
-
-              <td>{{ item.house_rent }}</td>
-
-              <td>{{ item.other}}</td>
-
-              <td>{{ item.total }}</td>
-            </tr>
-
-            {% endfor %}
-          </tbody>
-        </table>
+            <tbody>
+              {% for item in monthly_expenses %}
+              <tr>
+                <td>{{ item.month }}</td>
+                <td>{{ item.fuel }}</td>
+                <td>{{ item.office_rent }}</td>
+                <td>{{ item.repair }}</td>
+                <td>{{ item.oil }}</td>
+                <td>{{ item.house_rent }}</td>
+                <td>{{ item.payment }}</td>
+                <td>{{ item.other }}</td>
+                <td>{{ item.total }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </body>
