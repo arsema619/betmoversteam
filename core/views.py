@@ -481,20 +481,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Booking
 
-@login_required
-def completed_moves(request):
 
-    today = date.today()
-
-    bookings = Booking.objects.filter(
-        status__iexact='completed',
-        completed_at=today
-    )
-
-    return render(request, 'completed_moves.html', {
-        'bookings': bookings,
-        'today': today,
-    })
 
 @login_required
 def business_rule(request):
@@ -780,7 +767,6 @@ def monthly_expense_report(request):
 def admin_dashboard(request):
 
     if request.user.profile.role != 'admin':
-
         return redirect('/employee-dashboard/')
 
     total_bookings = Booking.objects.filter(
@@ -790,13 +776,13 @@ def admin_dashboard(request):
     today = date.today()
 
     completed_moves = Booking.objects.filter(
-    status='Completed',
-    date=today
-).count()
+        status__iexact='completed',
+        completed_at=today
+    ).count()
 
     total_progress = Booking.objects.filter(
-    status='Completed'
-).count()
+        status='Completed'
+    ).count()
 
     daily_expense = Expense.objects.count()
 
@@ -816,9 +802,6 @@ def admin_dashboard(request):
             'total_progress': total_progress,
         }
     )
-
-
-
 
 @login_required
 def employee_monthly_expense(request):
@@ -1155,7 +1138,7 @@ def employee_dashboard(request):
     # =========================
     completed_moves = Booking.objects.filter(
         status__iexact='completed',
-        date=today
+        completed_at=today
     ).count()
 
     # =========================
@@ -1179,6 +1162,8 @@ def employee_dashboard(request):
         'monthly_expense': monthly_expense,
         'today': today,
     })
+
+
 
 from datetime import date
 
