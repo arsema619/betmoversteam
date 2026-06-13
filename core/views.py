@@ -258,15 +258,14 @@ def edit_booking(request, id):
         booking.from_location = request.POST['from_location']
         booking.to_location = request.POST['to_location']
 
-        booking.total_price = request.POST['total_price']
-        booking.advance = request.POST['advance']
-
-        booking.extra = request.POST['extra']
+        booking.total_price = float(request.POST['total_price'] or 0)
+        booking.advance = float(request.POST['advance'] or 0)
+        booking.extra = float(request.POST['extra'] or 0)
 
         booking.balance = (
-            float(booking.total_price)
-            + float(booking.extra)
-            - float(booking.advance)
+            booking.total_price
+            + booking.extra
+            - booking.advance
         )
 
         booking.date = request.POST['date']

@@ -26,8 +26,7 @@
 
           <!-- CUSTOMER NAME -->
           <div class="mb-3">
-            <label class="form-label"> Customer Name </label>
-
+            <label class="form-label">Customer Name</label>
             <input
               type="text"
               name="customer_name"
@@ -39,8 +38,7 @@
 
           <!-- PHONE -->
           <div class="mb-3">
-            <label class="form-label"> Phone </label>
-
+            <label class="form-label">Phone</label>
             <input
               type="text"
               name="phone"
@@ -52,8 +50,7 @@
 
           <!-- FROM LOCATION -->
           <div class="mb-3">
-            <label class="form-label"> From Location </label>
-
+            <label class="form-label">From Location</label>
             <input
               type="text"
               name="from_location"
@@ -65,8 +62,7 @@
 
           <!-- TO LOCATION -->
           <div class="mb-3">
-            <label class="form-label"> To Location </label>
-
+            <label class="form-label">To Location</label>
             <input
               type="text"
               name="to_location"
@@ -78,10 +74,10 @@
 
           <!-- TOTAL PRICE -->
           <div class="mb-3">
-            <label class="form-label"> Total Price </label>
-
+            <label class="form-label">Total Price</label>
             <input
               type="number"
+              id="total_price"
               name="total_price"
               class="form-control"
               value="{{ booking.total_price }}"
@@ -91,10 +87,10 @@
 
           <!-- ADVANCE -->
           <div class="mb-3">
-            <label class="form-label"> Advance </label>
-
+            <label class="form-label">Advance</label>
             <input
               type="number"
+              id="advance"
               name="advance"
               class="form-control"
               value="{{ booking.advance }}"
@@ -102,32 +98,34 @@
             />
           </div>
 
-          <!-- BALANCE -->
+          <!-- EXTRA -->
           <div class="mb-3">
-            <label class="form-label"> Balance </label>
-
+            <label class="form-label">Extra</label>
             <input
               type="number"
-              name="balance"
+              id="extra"
+              name="extra"
+              value="{{ booking.extra }}"
               class="form-control"
-              value="{{ booking.balance }}"
-              required
             />
           </div>
 
-          <label>Extra</label>
-
-          <input
-            type="number"
-            name="extra"
-            value="{{ booking.extra }}"
-            class="form-control"
-          />
+          <!-- BALANCE (auto-calculated, read-only) -->
+          <div class="mb-3">
+            <label class="form-label">Balance</label>
+            <input
+              type="number"
+              id="balance"
+              name="balance"
+              class="form-control"
+              value="{{ booking.balance }}"
+              readonly
+            />
+          </div>
 
           <!-- DATE -->
           <div class="mb-3">
-            <label class="form-label"> Date </label>
-
+            <label class="form-label">Date</label>
             <input
               type="date"
               name="date"
@@ -138,11 +136,8 @@
           </div>
 
           <!-- STATUS -->
-
-          <!-- STATUS -->
           <div class="mb-3">
-            <label class="form-label"> Status </label>
-
+            <label class="form-label">Status</label>
             <select name="status" class="form-control">
               <option
                 value="Pending"
@@ -150,9 +145,7 @@
                 if
                 booking.status=""
                 ="Pending"
-                %}
-                selected
-                {%
+                %}selected{%
                 endif
                 %}
               >
@@ -165,9 +158,7 @@
                 if
                 booking.status=""
                 ="Completed"
-                %}
-                selected
-                {%
+                %}selected{%
                 endif
                 %}
               >
@@ -182,10 +173,32 @@
               Update Booking
             </button>
 
-            <a href="/" class="btn btn-secondary"> Cancel </a>
+            <a href="/" class="btn btn-secondary">Cancel</a>
           </div>
         </form>
       </div>
     </div>
+
+    <script>
+      function calculateBalance() {
+        let total = Number(document.getElementById("total_price").value) || 0;
+        let advance = Number(document.getElementById("advance").value) || 0;
+        let extra = Number(document.getElementById("extra").value) || 0;
+
+        let balance = total + extra - advance;
+
+        document.getElementById("balance").value = balance;
+      }
+
+      document
+        .getElementById("total_price")
+        .addEventListener("input", calculateBalance);
+      document
+        .getElementById("advance")
+        .addEventListener("input", calculateBalance);
+      document
+        .getElementById("extra")
+        .addEventListener("input", calculateBalance);
+    </script>
   </body>
 </html>
