@@ -580,7 +580,7 @@ def add_monthly_expense(request):
 
 from django.shortcuts import render
 from django.db.models import Sum, F
-from .models import Booking, Expense
+from .models import Booking, Expense, MonthlyExpense
 
 def profit_loss(request):
 
@@ -629,9 +629,19 @@ def profit_loss(request):
     # INCOME = total_price + extra (same as balance)
     total_income = sum((b.total_price or 0) + (b.extra or 0) for b in bookings)
 
-    total_expense = expenses.aggregate(
+    # DAILY EXPENSE
+    daily_expense_total = expenses.aggregate(
         total=Sum("total")
     )["total"] or 0
+
+    # MONTHLY EXPENSE for this month
+    monthly_expense_total = MonthlyExpense.objects.filter(
+        month=month
+    ).aggregate(
+        total=Sum("total")
+    )["total"] or 0
+
+    total_expense = daily_expense_total + monthly_expense_total
 
     total_profit = total_income - total_expense
 
@@ -641,6 +651,8 @@ def profit_loss(request):
         "bookings": bookings,
         "total_income": total_income,
         "total_expense": total_expense,
+        "daily_expense_total": daily_expense_total,
+        "monthly_expense_total": monthly_expense_total,
         "total_profit": total_profit,
     })
 

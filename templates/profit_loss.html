@@ -151,6 +151,19 @@
           </div>
         </div>
 
+        <div class="mt-4">
+          <h4>Total Income: {{ total_income }}</h4>
+          <h4>Daily Expense: {{ daily_expense_total }}</h4>
+          <h4>Monthly Expense: {{ monthly_expense_total }}</h4>
+          <h4>Total Expense: {{ total_expense }}</h4>
+
+          {% if total_profit > 0 %}
+          <h3 class="profit">Total Profit: {{ total_profit }}</h3>
+          {% else %}
+          <h3 class="loss">Total Loss: {{ total_profit }}</h3>
+          {% endif %}
+        </div>
+
         {% endif %}
       </div>
     </div>
