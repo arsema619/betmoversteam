@@ -476,6 +476,21 @@ def upcoming_bookings(request):
     )
 
 
+@login_required
+def completed_moves(request):
+
+    today = date.today()
+
+    bookings = Booking.objects.filter(
+        status__iexact='completed',
+        completed_at=today
+    )
+
+    return render(request, 'completed_moves.html', {
+        'bookings': bookings,
+        'today': today,
+    })
+
 from datetime import date
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
