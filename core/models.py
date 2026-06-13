@@ -45,7 +45,7 @@ class Booking(models.Model):
     # final calculated balance
     balance = models.FloatField(default=0)
 
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
 
     status = models.CharField(
         max_length=20,

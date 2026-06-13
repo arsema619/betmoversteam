@@ -36,6 +36,8 @@ def add_booking(request):
             total_price=float(request.POST['total_price'] or 0),
             advance=float(request.POST['advance'] or 0),
 
+            date=request.POST['date'],
+
             status='Pending'
         )
 
