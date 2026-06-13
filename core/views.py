@@ -81,7 +81,7 @@ def dashboard(request):
 
     completed_moves = Booking.objects.filter(
         status__iexact='completed',
-        date=today
+        completed_at=today
     ).count()
 
     # INCOME
@@ -741,7 +741,7 @@ def dashboard(request):
 
     completed_moves = Booking.objects.filter(
         status__iexact='completed',
-        date=today
+        completed_at=today
     ).count()
 
     return render(request, 'employee_dashboard.html', {
