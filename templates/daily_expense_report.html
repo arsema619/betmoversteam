@@ -14,47 +14,49 @@
       <div class="card shadow p-4 border-0 rounded-4">
         <h2 class="mb-4">Daily Expense Report</h2>
 
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Customer</th>
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Customer</th>
+                <th>Move Number</th>
+                <th>Date</th>
+                <th>Labor</th>
+                <th>Packers</th>
+                <th>Supervisor</th>
+                <th>Driver</th>
+                <th>Stairs</th>
+                <th>Derdare</th>
+                <th>Night</th>
+                <th>Long Way</th>
+                <th>Carpenter</th>
+                <th>Additional</th>
+                <th>Total</th>
+              </tr>
+            </thead>
 
-              <th>Move Number</th>
-
-              <th>Labor</th>
-
-              <th>Packers</th>
-
-              <th>Supervisor</th>
-
-              <th>Driver</th>
-
-              <th>Total</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {% for expense in expenses %}
-
-            <tr>
-              <td>{{ expense.booking.customer_name }}</td>
-
-              <td>Move {{ expense.booking.id }}</td>
-
-              <td>{{ expense.labor }}</td>
-
-              <td>{{ expense.packers }}</td>
-
-              <td>{{ expense.supervisor }}</td>
-
-              <td>{{ expense.driver }}</td>
-
-              <td>{{ expense.total|default:"0" }}</td>
-            </tr>
-
-            {% endfor %}
-          </tbody>
-        </table>
+            <tbody>
+              {% for expense in expenses %}
+              <tr>
+                <td>{{ expense.booking.customer_name }}</td>
+                <td>Move {{ expense.booking.id }}</td>
+                <td>{{ expense.date }}</td>
+                <td>{{ expense.labor }}</td>
+                <td>{{ expense.packers }}</td>
+                <td>{{ expense.supervisor }}</td>
+                <td>{{ expense.driver }}</td>
+                <td>{{ expense.stairs }}</td>
+                <td>{{ expense.derdare }}</td>
+                <td>{{ expense.night }}</td>
+                <td>{{ expense.long_way }}</td>
+                <td>{{ expense.carpenter }}</td>
+                <td>{{ expense.additional }}</td>
+                <td>{{ expense.total|default:"0" }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </body>

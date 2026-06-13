@@ -757,7 +757,7 @@ def dashboard(request):
     })
 
 
-
+@login_required
 def daily_expense_report(request):
 
     expenses = Expense.objects.all().order_by('-date')
