@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from datetime import date
 
 
 class Booking(models.Model):
@@ -37,12 +38,10 @@ class Booking(models.Model):
 
     total_price = models.FloatField()
 
-    # keep advance (NOT used in calculation)
     advance = models.FloatField(default=0)
 
     extra = models.FloatField(default=0)
 
-    # final calculated balance
     balance = models.FloatField(default=0)
 
     date = models.DateField()
@@ -52,9 +51,17 @@ class Booking(models.Model):
         default='Pending'
     )
 
-    # ✅ AUTO CALCULATE BALANCE (IMPORTANT FIX)
+    completed_at = models.DateField(null=True, blank=True)
+
     def save(self, *args, **kwargs):
         self.balance = self.total_price + self.extra
+
+        if self.status == 'Completed' and not self.completed_at:
+            self.completed_at = date.today()
+
+        if self.status != 'Completed':
+            self.completed_at = None
+
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -69,26 +76,18 @@ class Expense(models.Model):
     )
 
     labor = models.FloatField(default=0)
-
     packers = models.FloatField(default=0)
-
     supervisor = models.FloatField(default=0)
-
     driver = models.FloatField(default=0)
-
     stairs = models.FloatField(default=0)
 
-
     additional = models.FloatField(default=0)
-    
+
     time = models.CharField(max_length=50, default='')
 
     derdare = models.IntegerField(default=0)
-
     night = models.IntegerField(default=0)
-
     long_way = models.IntegerField(default=0)
-
     carpenter = models.IntegerField(default=0)
 
     total = models.FloatField(default=0)
@@ -96,9 +95,7 @@ class Expense(models.Model):
     date = models.DateField()
 
     def __str__(self):
-
         return f"Expense for Move {self.booking.id}"
-    
 
 
 class MonthlyExpense(models.Model):
@@ -106,25 +103,18 @@ class MonthlyExpense(models.Model):
     month = models.IntegerField()
 
     fuel = models.IntegerField(default=0)
-
     repair = models.IntegerField(default=0)
-
     oil = models.IntegerField(default=0)
-
     office_rent = models.IntegerField(default=0)
-
     house_rent = models.IntegerField(default=0)
-
     other = models.IntegerField(default=0)
-
-    payment = models.FloatField(default=0) 
+    payment = models.FloatField(default=0)
 
     total = models.IntegerField(default=0)
 
     def __str__(self):
-
         return str(self.month)
-    
+
 
 class Profile(models.Model):
 
@@ -146,31 +136,17 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
-    
 
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
-
     if created:
-
         Profile.objects.create(user=instance)
+
 
 class BusinessRule(models.Model):
 
-    title = models.CharField(max_length=200)
-
-    description = models.TextField()
+    content = models.TextField(blank=True, default='')
 
     def __str__(self):
-
-        return self.title
-    
-
-
-
-time = models.CharField(max_length=50, default='')
-
-extra = models.IntegerField(default=0)
-
-balance = models.IntegerField(default=0)
+        return "Business Rules"

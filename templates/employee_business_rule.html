@@ -27,7 +27,11 @@
       <div class="card-box">
         <h2 class="mb-4">Business Rules</h2>
 
+        {% if rule %}
         <div>{{ rule.content|linebreaks }}</div>
+        {% else %}
+        <p>No business rules have been added yet.</p>
+        {% endif %}
       </div>
     </div>
   </body>

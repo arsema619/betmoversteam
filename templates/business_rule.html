@@ -13,11 +13,20 @@
     <div class="container mt-5">
       <h2 class="mb-4">Business Rule</h2>
 
-      <textarea
-        class="form-control"
-        rows="20"
-        placeholder="Write business rules here..."
-      ></textarea>
+      <form method="POST">
+        {% csrf_token %}
+
+        <textarea
+          name="content"
+          class="form-control mb-3"
+          rows="20"
+          placeholder="Write business rules here..."
+        >
+{{ rule.content }}</textarea
+        >
+
+        <button class="btn btn-primary">Save</button>
+      </form>
     </div>
   </body>
 </html>

@@ -486,10 +486,9 @@ def completed_moves(request):
 
     today = date.today()
 
-    # BOTH ADMIN AND EMPLOYEE SEE ONLY TODAY
     bookings = Booking.objects.filter(
         status__iexact='completed',
-        date=today
+        completed_at=today
     )
 
     return render(request, 'completed_moves.html', {
@@ -497,12 +496,18 @@ def completed_moves(request):
         'today': today,
     })
 
+@login_required
 def business_rule(request):
 
-    return render(
-        request,
-        'business_rule.html'
-    )
+    rule, created = BusinessRule.objects.get_or_create(id=1)
+
+    if request.method == 'POST':
+        rule.content = request.POST.get('content', '')
+        rule.save()
+
+    return render(request, 'business_rule.html', {
+        'rule': rule
+    })
 
 
 @login_required
@@ -955,18 +960,14 @@ def home(request):
 
 
 
+@login_required
 def employee_business_rule(request):
 
-    rule = BusinessRule.objects.last()
+    rule = BusinessRule.objects.first()
 
-    return render(
-        request,
-        'employee_business_rule.html',
-        {
-            'rule': rule
-        }
-    )
-
+    return render(request, 'employee_business_rule.html', {
+        'rule': rule
+    })
 
 
 def login_view(request):
