@@ -269,7 +269,6 @@ def edit_booking(request, id):
         )
 
         booking.date = request.POST['date']
-
         booking.status = request.POST['status']
 
         booking.save()

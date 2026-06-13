@@ -129,6 +129,7 @@
             <input
               type="date"
               name="date"
+              id="date"
               class="form-control"
               value="{{ booking.date|date:'Y-m-d' }}"
               required
@@ -199,6 +200,16 @@
       document
         .getElementById("extra")
         .addEventListener("input", calculateBalance);
+
+      // Restrict date picker to today or future
+      // (existing booking date remains visible/selectable even if in the past)
+      const dateInput = document.getElementById("date");
+      const today = new Date().toISOString().split("T")[0];
+      const existingDate = dateInput.value;
+
+      if (!existingDate || existingDate >= today) {
+        dateInput.setAttribute("min", today);
+      }
     </script>
   </body>
 </html>
