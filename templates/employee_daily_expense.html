@@ -137,6 +137,59 @@
 
           <button class="btn btn-primary w-100">Save Expense</button>
         </form>
+
+        {% if expenses_today %}
+        <hr class="my-4" />
+        <h4 class="mb-3">Today's Expenses ({{ today }})</h4>
+
+        <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Move</th>
+                <th>Labor</th>
+                <th>Packers</th>
+                <th>Supervisor</th>
+                <th>Driver</th>
+                <th>Stairs</th>
+                <th>Derdare</th>
+                <th>Night</th>
+                <th>Long Way</th>
+                <th>Carpenter</th>
+                <th>Additional</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for expense in expenses_today %}
+              <tr>
+                <td>
+                  Move {{ expense.booking.id }} - {{
+                  expense.booking.customer_name }}
+                </td>
+                <td>{{ expense.labor }}</td>
+                <td>{{ expense.packers }}</td>
+                <td>{{ expense.supervisor }}</td>
+                <td>{{ expense.driver }}</td>
+                <td>{{ expense.stairs }}</td>
+                <td>{{ expense.derdare }}</td>
+                <td>{{ expense.night }}</td>
+                <td>{{ expense.long_way }}</td>
+                <td>{{ expense.carpenter }}</td>
+                <td>{{ expense.additional }}</td>
+                <td>{{ expense.total }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            <tfoot>
+              <tr class="table-dark">
+                <td colspan="11" class="text-end fw-bold">Grand Total</td>
+                <td class="fw-bold">{{ grand_total }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        {% endif %}
       </div>
     </div>
 

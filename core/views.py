@@ -891,7 +891,6 @@ def employee_monthly_expense(request):
 @login_required
 def employee_daily_expense(request):
 
-
     bookings = Booking.objects.all()
 
     if request.method == 'POST':
@@ -901,25 +900,15 @@ def employee_daily_expense(request):
         )
 
         labor = float(request.POST['labor'] or 0)
-
         packers = float(request.POST['packers'] or 0)
-
         supervisor = float(request.POST['supervisor'] or 0)
-
         driver = float(request.POST['driver'] or 0)
-
         stairs = float(request.POST['stairs'] or 0)
 
-
-        derdare = int (request.POST['derdare'] or 0)
-
+        derdare = int(request.POST['derdare'] or 0)
         night = int(request.POST['night'] or 0)
-
         long_way = int(request.POST['long_way'] or 0)
-
-        carpenter = int( request.POST['carpenter'] or 0)
-
-
+        carpenter = int(request.POST['carpenter'] or 0)
 
         additional = float(request.POST['additional'] or 0)
 
@@ -930,52 +919,47 @@ def employee_daily_expense(request):
             driver +
             stairs +
             derdare +
-           night +
-           long_way +
-           carpenter +
-            additional 
-            
+            night +
+            long_way +
+            carpenter +
+            additional
         )
 
         Expense.objects.create(
-
             booking=booking,
-
             labor=labor,
-
             packers=packers,
-
             supervisor=supervisor,
-
             driver=driver,
-
             stairs=stairs,
-    
-        
-             derdare=derdare,
-
-             night=night,
-
-             long_way=long_way,
-
+            derdare=derdare,
+            night=night,
+            long_way=long_way,
             carpenter=carpenter,
-
             additional=additional,
-
-            
-
             total=round(total, 2),
-
             date=request.POST['date']
         )
 
-        return redirect('/employee-dashboard/')
+        return redirect('/employee-daily-expense/')
+
+    # Show today's expenses + running total
+    today = date.today()
+
+    expenses_today = Expense.objects.filter(date=today).order_by('-id')
+
+    grand_total = expenses_today.aggregate(
+        Sum('total')
+    )['total__sum'] or 0
 
     return render(
         request,
         'add_expense.html',
         {
-            'bookings': bookings
+            'bookings': bookings,
+            'expenses_today': expenses_today,
+            'grand_total': grand_total,
+            'today': today,
         }
     )
 
