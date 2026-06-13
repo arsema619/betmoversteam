@@ -577,8 +577,9 @@ def add_monthly_expense(request):
         }
     )
 
+
 from django.shortcuts import render
-from django.db.models import Sum
+from django.db.models import Sum, F
 from .models import Booking, Expense
 
 def profit_loss(request):
@@ -598,17 +599,14 @@ def profit_loss(request):
         "selected_month": None,
     }
 
-    # no month selected → show grid
     if not month:
         return render(request, "profit_loss.html", context)
 
     month = int(month)
 
-    # BASE QUERY (MONTH FILTER)
     bookings = Booking.objects.filter(date__month=month)
     expenses = Expense.objects.filter(booking__date__month=month)
 
-    # WEEK FILTER (FIXED - NOT ISO WEEK)
     if week:
         week = int(week)
 
@@ -628,18 +626,15 @@ def profit_loss(request):
             bookings = bookings.filter(date__day__gte=22)
             expenses = expenses.filter(booking__date__day__gte=22)
 
-    # INCOME
-    total_income = sum(b.total_price or 0 for b in bookings)
+    # INCOME = total_price + extra (same as balance)
+    total_income = sum((b.total_price or 0) + (b.extra or 0) for b in bookings)
 
-    # EXPENSE (SAFE)
     total_expense = expenses.aggregate(
         total=Sum("total")
     )["total"] or 0
 
-    # PROFIT
     total_profit = total_income - total_expense
 
-    # CONTEXT
     context.update({
         "selected_month": month,
         "selected_month_name": dict(months).get(month),
@@ -651,38 +646,27 @@ def profit_loss(request):
 
     return render(request, "profit_loss.html", context)
 
+
 @login_required
 def profit_details(request, month):
 
-    from django.db.models import Sum
+    from django.db.models import Sum, F
     from .models import Booking, Expense, MonthlyExpense
 
     months = {
-
-        1: 'January',
-        2: 'February',
-        3: 'March',
-        4: 'April',
-        5: 'May',
-        6: 'June',
-        7: 'July',
-        8: 'August',
-        9: 'September',
-        10: 'October',
-        11: 'November',
-        12: 'December',
-
+        1: 'January', 2: 'February', 3: 'March', 4: 'April',
+        5: 'May', 6: 'June', 7: 'July', 8: 'August',
+        9: 'September', 10: 'October', 11: 'November', 12: 'December',
     }
 
     month_name = months.get(month)
 
-    bookings = Booking.objects.filter(
-        date__month=month
-    )
+    bookings = Booking.objects.filter(date__month=month)
 
+    # INCOME = total_price + extra (same as balance)
     total_income = bookings.aggregate(
-        Sum('total_price')
-    )['total_price__sum'] or 0
+        total=Sum(F('total_price') + F('extra'))
+    )['total'] or 0
 
     daily_expense = Expense.objects.filter(
         date__month=month
@@ -707,25 +691,15 @@ def profit_details(request, month):
     )
 
     return render(
-
         request,
-
         'profit_details.html',
-
         {
-
             'month_name': month_name,
-
             'bookings': bookings,
-
             'total_income': total_income,
-
             'total_expense': total_expense,
-
             'total_profit': total_profit,
-
         }
-
     )
 
 
